@@ -1,4 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import init, { greet } from "../../future-calc/pkg/future_calc"
+init().then(()=>{
+  greet("hello")
+})
+</script>
 <template>
   <h1>You did it!</h1>
   <p>

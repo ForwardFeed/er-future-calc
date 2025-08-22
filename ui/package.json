@@ -35,7 +35,9 @@
     "oxlint": "~1.8.0",
     "typescript": "~5.8.0",
     "vite": "npm:rolldown-vite@latest",
+    "vite-plugin-top-level-await": "^1.6.0",
     "vite-plugin-vue-devtools": "^8.0.0",
+    "vite-plugin-wasm": "^3.5.0",
     "vue-tsc": "^3.0.4"
   }
 }
