@@ -15,7 +15,7 @@
     "lint:oxlint": "oxlint . --fix -D correctness --ignore-path .gitignore",
     "lint:eslint": "eslint . --fix",
     "lint": "run-s lint:*",
-    "custom-server": "bun ../scripts/custom_server.js"
+    "custom-server": "bun ../scripts/custom_server.ts"
   },
   "dependencies": {
     "pinia": "^3.0.3",
