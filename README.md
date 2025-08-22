@@ -91,3 +91,11 @@ Open a terminal in ui/
 ```
 bun install
 ```
+
+### Using the project_helper.sh
+Jumping from folders to folders is annoying, here's why I made a project helper in bash
+
+There's even autocomplete if you do `. ./scripts/project_helpers.sh` before executing it normally
+
+But if you execute it normally `./scripts/project_helpers.sh`
+You will figure out how to use it

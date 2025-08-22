@@ -119,6 +119,15 @@ function __wbg_get_imports() {
     imports.wbg.__wbg_alert_191c3fc44b3b9a2c = function(arg0, arg1) {
         alert(getStringFromWasm0(arg0, arg1));
     };
+    imports.wbg.__wbg_log_3fbc2e448577f746 = function(arg0) {
+        console.log(arg0 >>> 0);
+    };
+    imports.wbg.__wbg_log_5378a5c8487c415b = function(arg0, arg1) {
+        console.log(getStringFromWasm0(arg0, arg1));
+    };
+    imports.wbg.__wbg_log_c5fe9420e2684f2d = function(arg0, arg1, arg2, arg3) {
+        console.log(getStringFromWasm0(arg0, arg1), getStringFromWasm0(arg2, arg3));
+    };
     imports.wbg.__wbindgen_init_externref_table = function() {
         const table = wasm.__wbindgen_export_0;
         const offset = table.grow(4);
