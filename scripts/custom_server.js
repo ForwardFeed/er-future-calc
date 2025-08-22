@@ -5,6 +5,11 @@ const server = Bun.serve({
   port: PORT,
   // `routes` requires Bun v1.2.3+
   routes: {
+    "/*": {
+      GET: () => {
+        return new Response(`hi`, {status: 200})
+      }
+    }
     // Static routes
     /* "/api/status": new Response("OK"),
 
