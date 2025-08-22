@@ -67,14 +67,27 @@ y'know what fuck it lets ball I want to do that.
 
 I do everything on linux because linux rocks, maybe you can have it working on windows 
 
-install [rust](https://www.rust-lang.org/tools/install)
-install [wasm-pack](https://developer.mozilla.org/en-US/docs/WebAssembly/Guides/Rust_to_Wasm#wasm-pack) with `cargo install wasm-pack`
+To build the calculator: 
 
-### Buildings the calc
+- install [rust](https://www.rust-lang.org/tools/install)
+- install [wasm-pack](https://developer.mozilla.org/en-US/docs/WebAssembly/Guides/Rust_to_Wasm#wasm-pack) with `cargo install wasm-pack`
+
+To build the UI:
+
+- install [bun](https://bun.sh/)
+
+
+
+### Building the calc
 
 Open a terminal in future-calc/
 ```
 wasm-pack build --target web
 ```
 
+### Building the UI
 
+Open a terminal in ui/
+```
+bun install
+```
