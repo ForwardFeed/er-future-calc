@@ -34,7 +34,7 @@ Automation can be required to update the data, romhacks that are in devellopemen
 - /ui
 At least one UI is needed, eventually everyone could do their own, but if we had to place an UI somewhere, lets place it here
 
-- /calc
+- /future-calc
 The actual code machinery
 
 - /scripts
@@ -59,5 +59,22 @@ Cons:
 - needs a /type folder now.
 - People having phones who don't support wasm, 4%, will be excluded.
 
-y'know what lets ball I want to do that.
+y'know what fuck it lets ball I want to do that.
+
+## Installation
+
+### Requirements
+
+I do everything on linux because linux rocks, maybe you can have it working on windows 
+
+install [rust](https://www.rust-lang.org/tools/install)
+install [wasm-pack](https://developer.mozilla.org/en-US/docs/WebAssembly/Guides/Rust_to_Wasm#wasm-pack) with `cargo install wasm-pack`
+
+### Buildings the calc
+
+Open a terminal in future-calc/
+```
+wasm-pack build --target web
+```
+
 
