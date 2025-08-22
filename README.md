@@ -34,7 +34,7 @@ Automation can be required to update the data, romhacks that are in devellopemen
 - /ui
 At least one UI is needed, eventually everyone could do their own, but if we had to place an UI somewhere, lets place it here
 
-- /future-calc
+- /calc
 The actual code machinery
 
 - /scripts
@@ -80,7 +80,7 @@ To build the UI:
 
 ### Building the calc
 
-Open a terminal in future-calc/
+Open a terminal in calc/
 ```
 wasm-pack build --target web
 ```

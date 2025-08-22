@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import init, { greet } from "../../future-calc/pkg/future_calc"
+import init, { greet } from "../../calc/pkg/future_calc"
 init().then(()=>{
   greet("hello")
 })

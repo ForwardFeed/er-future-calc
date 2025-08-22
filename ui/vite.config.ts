@@ -22,7 +22,7 @@ export default defineConfig({
     fs: {
       allow: [
         searchForWorkspaceRoot(process.cwd()),
-        '../future-calc/pkg'
+        '../calc/pkg'
       ]
     }
   }

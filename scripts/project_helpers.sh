@@ -32,7 +32,7 @@ function showArgs(){
 case "$1" in
 
     build-calc)
-        (cd future-calc && wasm-pack build --target web) ||
+        (cd calc && wasm-pack build --target web) ||
         echo "error packing the wasm from the calc"
     ;;
     run-ui)
@@ -43,7 +43,7 @@ case "$1" in
         echo "installing ui stuff" &&
         (cd ui/ && bun install) &&
         echo "installing calc stuff" && 
-        (cd future-calc/ && cargo build) && 
+        (cd calc/ && wasm-pack build --target web) && 
         echo "it should be good now" ||
         echo "something went wrong in the setup"
     ;;
