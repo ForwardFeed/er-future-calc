@@ -1,5 +1,6 @@
 use wasm_bindgen::{prelude::*};
 
+#[wasm_bindgen]
 pub enum Weather {
     None,
     Sand,
@@ -11,7 +12,7 @@ pub enum Weather {
     HeavyRain,
     StrongWings
 }
-
+#[wasm_bindgen]
 pub enum Terrain {
     None,
     Electric,
@@ -19,7 +20,7 @@ pub enum Terrain {
     Psychic,
     Misty,
 }
-
+#[wasm_bindgen]
 pub enum GameType {
     Single,
     Double
@@ -27,6 +28,6 @@ pub enum GameType {
 
 #[wasm_bindgen]
 pub struct Field{
+    terrain: Terrain,
     game_type: GameType,
-
 }

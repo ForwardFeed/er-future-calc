@@ -42,5 +42,5 @@ pub struct MoveFlags{
 }
 
 pub struct Move{
-    name: &str,
+    name: &'static str,
 }

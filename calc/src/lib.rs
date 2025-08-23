@@ -1,6 +1,6 @@
 use wasm_bindgen::prelude::*;
 
-use crate::{types::pokemon::Pokemon, web_functions::{alert, log, log_many, log_u32}};
+use crate::{types::{field::Terrain, pokemon::Pokemon}, web_functions::{alert, log, log_many, log_u32}};
 
 mod web_functions;
 mod types{
@@ -23,6 +23,6 @@ fn has_defender_more_hp(attacker: Pokemon, defender: Pokemon) -> bool{
 }
 
 #[wasm_bindgen]
-pub fn calc_gen_redux(attacker: Pokemon, defender: Pokemon){
+pub fn calc_gen_redux(attacker: Pokemon, defender: Pokemon, terrain: Terrain){
     has_defender_more_hp(attacker, defender);
 }
