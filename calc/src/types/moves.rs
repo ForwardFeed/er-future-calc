@@ -1,5 +1,9 @@
 use wasm_bindgen::prelude::*;
+use ts_rs::TS;
 
+#[wasm_bindgen]
+#[derive(TS)]
+#[ts(export)]
 pub enum MoveTarget{
     AdjacentAlly,
     AdjacentAllyOrSelf,
@@ -17,13 +21,17 @@ pub enum MoveTarget{
     Scripted,
     SSelf,
 }
-
+#[wasm_bindgen]
+#[derive(TS)]
+#[ts(export)]
 pub enum MoveCategory{
     Physical,
     Special,
     Status,
 }
-
+#[wasm_bindgen]
+#[derive(TS)]
+#[ts(export)]
 pub struct MoveFlags{
     contact: bool,
     bite: bool,
@@ -40,7 +48,9 @@ pub struct MoveFlags{
     air: bool,
     weather: bool,
 }
-
+#[wasm_bindgen]
+#[derive(TS)]
+#[ts(export)]
 pub struct Move{
     name: &'static str,
 }

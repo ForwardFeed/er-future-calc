@@ -1,5 +1,10 @@
 use wasm_bindgen::{prelude::*};
+use ts_rs::TS;
 
+
+#[wasm_bindgen]
+#[derive(TS)]
+#[ts(export)]
 pub enum Nature {
     Adamant,
     Bashful,
@@ -27,7 +32,9 @@ pub enum Nature {
     Serious,
     Timid,
 }
-
+#[wasm_bindgen]
+#[derive(TS)]
+#[ts(export)]
 pub enum PokemonStatus {
     Sleep,
     Poison,
@@ -36,7 +43,9 @@ pub enum PokemonStatus {
     Paralyz,
     Toxic,
 }
-
+#[wasm_bindgen]
+#[derive(TS)]
+#[ts(export)]
 pub enum PokemonType {
     Normal,
     Fighting,
@@ -60,6 +69,8 @@ pub enum PokemonType {
 }
 
 #[wasm_bindgen]
+#[derive(TS)]
+#[ts(export)]
 
 pub struct Pokemon{
     pub hp: u16,
