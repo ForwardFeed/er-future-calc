@@ -1,6 +1,6 @@
 use wasm_bindgen::prelude::*;
 
-use crate::{types::{field::Terrain, pokemon::Pokemon}, web_functions::{alert, log, log_many, log_u32}};
+use crate::{types::{field::{Field, Terrain}, pokemon::Pokemon}, web_functions::{alert, error, log, log_many, log_u32}};
 
 mod web_functions;
 mod types{
@@ -23,6 +23,27 @@ fn has_defender_more_hp(attacker: Pokemon, defender: Pokemon) -> bool{
 }
 
 #[wasm_bindgen]
-pub fn calc_gen_redux(attacker: Pokemon, defender: Pokemon, terrain: Terrain){
+pub fn calc_gen_redux(js_attacker: JsValue, js_defender: JsValue, js_terrain: JsValue){
+    let attacker: Pokemon = match serde_wasm_bindgen::from_value(js_attacker) {
+        Ok(x) => x,
+        Err(e) => {
+            error("Failed to parse the attacker as a pokemon");
+            return;
+        },
+    };
+    let defender: Pokemon = match serde_wasm_bindgen::from_value(js_defender) {
+        Ok(x) => x,
+        Err(e) => {
+            error("Failed to parse the defender as a pokemon");
+            return;
+        },
+    };
+    let terrain: Field = match serde_wasm_bindgen::from_value(js_terrain) {
+        Ok(x) => x,
+        Err(e) => {
+            error("Failed to parse the terrain as a terrain");
+            return;
+        },
+    };
     has_defender_more_hp(attacker, defender);
 }

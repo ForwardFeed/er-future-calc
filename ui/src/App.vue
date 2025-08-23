@@ -1,7 +1,21 @@
 <script setup lang="ts">
-import init, { greet } from "../../calc/pkg/future_calc"
+import type { Field, Terrain } from "../../calc/bindings/field";
+import type { Pokemon } from "../../calc/bindings/pokemon";
+import init, { calc_gen_redux } from "../../calc/pkg/future_calc"
 init().then(()=>{
-  greet("hello")
+   const attacker: Pokemon = {
+    hp: 0,
+    hp_max: 0,
+  }
+  const defender: Pokemon = {
+    hp: 0,
+    hp_max: 0,
+  }
+  const terrain: Field = {
+    terrain: "None",
+    game_type: "Single"
+  }
+  calc_gen_redux(attacker, defender, terrain)
 })
 </script>
 <template>
