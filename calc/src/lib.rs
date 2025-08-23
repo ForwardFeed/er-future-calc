@@ -5,6 +5,8 @@ use crate::{types::pokemon::Pokemon, web_functions::{alert, log, log_many, log_u
 mod web_functions;
 mod types{
     pub mod pokemon;
+    pub mod field;
+    pub mod moves;
 }
 
 #[wasm_bindgen]
