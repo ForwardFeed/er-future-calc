@@ -27,21 +27,21 @@ pub fn calc_gen_redux(js_attacker: JsValue, js_defender: JsValue, js_terrain: Js
     let attacker: Pokemon = match serde_wasm_bindgen::from_value(js_attacker) {
         Ok(x) => x,
         Err(e) => {
-            error("Failed to parse the attacker as a pokemon");
+            error(format!("Failed to parse the attacker as a pokemon: {}", e).as_str());
             return;
         },
     };
     let defender: Pokemon = match serde_wasm_bindgen::from_value(js_defender) {
         Ok(x) => x,
         Err(e) => {
-            error("Failed to parse the defender as a pokemon");
+            error(format!("Failed to parse the defender as a pokemon: {}", e).as_str());
             return;
         },
     };
     let terrain: Field = match serde_wasm_bindgen::from_value(js_terrain) {
         Ok(x) => x,
         Err(e) => {
-            error("Failed to parse the terrain as a terrain");
+            error(format!("Failed to parse the terrain as a terrain: {}", e).as_str());
             return;
         },
     };
