@@ -3,7 +3,7 @@ use ts_rs::TS;
 
 #[wasm_bindgen]
 #[derive(TS)]
-#[ts(export)]
+#[ts(export, export_to="moves.ts")]
 pub enum MoveTarget{
     AdjacentAlly,
     AdjacentAllyOrSelf,
@@ -23,7 +23,7 @@ pub enum MoveTarget{
 }
 #[wasm_bindgen]
 #[derive(TS)]
-#[ts(export)]
+#[ts(export, export_to="moves.ts")]
 pub enum MoveCategory{
     Physical,
     Special,
@@ -31,7 +31,7 @@ pub enum MoveCategory{
 }
 #[wasm_bindgen]
 #[derive(TS)]
-#[ts(export)]
+#[ts(export, export_to="moves.ts")]
 pub struct MoveFlags{
     contact: bool,
     bite: bool,
@@ -50,7 +50,7 @@ pub struct MoveFlags{
 }
 #[wasm_bindgen]
 #[derive(TS)]
-#[ts(export)]
+#[ts(export, export_to="moves.ts")]
 pub struct Move{
     name: &'static str,
 }

@@ -3,7 +3,7 @@ use ts_rs::TS;
 
 #[wasm_bindgen]
 #[derive(TS)]
-#[ts(export)]
+#[ts(export, export_to="field.ts")]
 pub enum Weather {
     None,
     Sand,
@@ -17,7 +17,7 @@ pub enum Weather {
 }
 #[wasm_bindgen]
 #[derive(TS)]
-#[ts(export)]
+#[ts(export, export_to="field.ts")]
 pub enum Terrain {
     None,
     Electric,
@@ -27,7 +27,7 @@ pub enum Terrain {
 }
 #[wasm_bindgen]
 #[derive(TS)]
-#[ts(export)]
+#[ts(export, export_to="field.ts")]
 pub enum GameType {
     Single,
     Double
@@ -35,7 +35,7 @@ pub enum GameType {
 
 #[wasm_bindgen]
 #[derive(TS)]
-#[ts(export)]
+#[ts(export, export_to="field.ts")]
 pub struct Field{
     terrain: Terrain,
     game_type: GameType,

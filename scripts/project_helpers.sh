@@ -32,7 +32,8 @@ function showArgs(){
 case "$1" in
 
     build-calc)
-        (cd calc && wasm-pack build --target web) ||
+        (cd calc/ && wasm-pack build --target web) &&
+        (cd calc/ && cargo test export_bindings ) ||
         echo "error packing the wasm from the calc"
     ;;
     run-ui)

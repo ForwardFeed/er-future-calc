@@ -4,7 +4,7 @@ use ts_rs::TS;
 
 #[wasm_bindgen]
 #[derive(TS)]
-#[ts(export)]
+#[ts(export, export_to="pokemon.ts")]
 pub enum Nature {
     Adamant,
     Bashful,
@@ -34,7 +34,7 @@ pub enum Nature {
 }
 #[wasm_bindgen]
 #[derive(TS)]
-#[ts(export)]
+#[ts(export, export_to="pokemon.ts")]
 pub enum PokemonStatus {
     Sleep,
     Poison,
@@ -45,7 +45,7 @@ pub enum PokemonStatus {
 }
 #[wasm_bindgen]
 #[derive(TS)]
-#[ts(export)]
+#[ts(export, export_to="pokemon.ts")]
 pub enum PokemonType {
     Normal,
     Fighting,
@@ -70,7 +70,7 @@ pub enum PokemonType {
 
 #[wasm_bindgen]
 #[derive(TS)]
-#[ts(export)]
+#[ts(export, export_to="pokemon.ts")]
 
 pub struct Pokemon{
     pub hp: u16,
