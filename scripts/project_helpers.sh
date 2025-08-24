@@ -1,7 +1,7 @@
 #/usr/bin/env bash
 
 
-ARGS="build-calc run-ui full-setup"
+ARGS="build-calc run-ui full-setup data-create"
 
 # I like autocomplete, so if you source this script, it will add some nice autocomplete
 if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
@@ -47,6 +47,10 @@ case "$1" in
         (cd calc/ && wasm-pack build --target web) && 
         echo "it should be good now" ||
         echo "something went wrong in the setup"
+    ;;
+    data-create)
+        (cd data_creation/from_nextdex/ && bun run ./index.ts) ||
+        echo "something went wrong when creating the data"
     ;;
 
     *)
