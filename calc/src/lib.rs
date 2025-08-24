@@ -1,12 +1,16 @@
 use wasm_bindgen::prelude::*;
 
-use crate::{types::{field::{Field, Terrain}, pokemon::Pokemon}, web_functions::{alert, error, log, log_many, log_u32}};
+use crate::{calc::calc::calc_entrypoint, types::{field::{Field, Terrain}, pokemon::Pokemon}, web_functions::{alert, error, log, log_many, log_u32}};
 
 mod web_functions;
 mod types{
     pub mod pokemon;
     pub mod field;
     pub mod moves;
+}
+
+mod calc{
+    pub mod calc;
 }
 
 #[wasm_bindgen]
@@ -23,27 +27,27 @@ fn has_defender_more_hp(attacker: Pokemon, defender: Pokemon) -> bool{
 }
 
 #[wasm_bindgen]
-pub fn calc_gen_redux(js_attacker: JsValue, js_defender: JsValue, js_terrain: JsValue){
-    let attacker: Pokemon = match serde_wasm_bindgen::from_value(js_attacker) {
+pub fn calc_gen_redux(js_attacker: JsValue, js_defender: JsValue, js_field: JsValue){
+    let mut attacker: Pokemon = match serde_wasm_bindgen::from_value(js_attacker) {
         Ok(x) => x,
         Err(e) => {
             error(format!("Failed to parse the attacker as a pokemon: {}", e).as_str());
             return;
         },
     };
-    let defender: Pokemon = match serde_wasm_bindgen::from_value(js_defender) {
+    let mut defender: Pokemon = match serde_wasm_bindgen::from_value(js_defender) {
         Ok(x) => x,
         Err(e) => {
             error(format!("Failed to parse the defender as a pokemon: {}", e).as_str());
             return;
         },
     };
-    let terrain: Field = match serde_wasm_bindgen::from_value(js_terrain) {
+    let mut field: Field = match serde_wasm_bindgen::from_value(js_field) {
         Ok(x) => x,
         Err(e) => {
             error(format!("Failed to parse the terrain as a terrain: {}", e).as_str());
             return;
         },
     };
-    has_defender_more_hp(attacker, defender);
+    calc_entrypoint(&mut attacker, &mut defender, &mut field);
 }
