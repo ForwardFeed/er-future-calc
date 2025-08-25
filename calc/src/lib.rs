@@ -7,6 +7,8 @@ mod types{
     pub mod pokemon;
     pub mod field;
     pub mod moves;
+
+    pub mod species;
 }
 
 mod calc{
