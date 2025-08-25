@@ -13,7 +13,7 @@ function upper_case_first_letter(str: string): string{
     return str.charAt(0).toUpperCase() + str.toLowerCase().slice(1)
 }
 
-function correct_rust_casing(str: string): string{
+export function correct_rust_casing(str: string): string{
     const no_underscore = str.split('_')
     const correct_str = no_underscore.map(upper_case_first_letter).join('')
     if (! ENUM_FIELD_REGEX.test(correct_str))
@@ -21,12 +21,10 @@ function correct_rust_casing(str: string): string{
     return correct_str
 }
 
-function generate_enum(params:{
+function generate_enum({enum_name, enum_content}:{
     enum_name: string,
     enum_content: string[]
 }){
-    const enum_name = correct_rust_casing(params.enum_name)
-    const enum_content = params.enum_content.map(correct_rust_casing)
     return `${WARNING_AUTO_EXPORT}
 use wasm_bindgen::{prelude::*};
 use serde::{Serialize, Deserialize};

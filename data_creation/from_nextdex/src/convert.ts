@@ -1,3 +1,4 @@
+import { correct_rust_casing } from "./export_as_rust"
 import type { CompactGameData } from "./types/nextdex_gamedata"
 import type { GameData, Specie } from "./types/ui_gamedata"
 
@@ -29,7 +30,7 @@ function convert_species(gamedata: GameData, nextdex_gamedata: CompactGameData){
     gamedata.species = nextdex_gamedata.species.map(x => {
         return {
             name: x.name,
-            name_id: substring(x.NAME, "SPECIES_"),
+            name_id: correct_rust_casing(substring(x.NAME, "SPECIES_")),
             types: x.stats.types
         } satisfies Specie
     })
