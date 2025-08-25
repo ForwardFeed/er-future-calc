@@ -99,3 +99,31 @@ There's even autocomplete if you do `. ./scripts/project_helpers.sh` before exec
 
 But if you execute it normally `./scripts/project_helpers.sh`
 You will figure out how to use it
+
+
+## About The Data Building Pipeline flow
+
+Since There's multiples languages to please here, the pipeline is complex.
+
+First I use a data_creation to automate many part of the process.
+From that standpoint which is not an absolute requirement, because if you have sanity to give, you could do it manually too.
+
+Anyway, So I pull data from my dex, again this is one way to do it, then I separate the concern:
+
+- Data Calc cares about and Identifiers
+- The data the UI cares about alongside identifiers.
+
+So my data creator codegenerate some enum in rust for the calc and create a JSON file (soon to become gzip file) for the UI.
+Then the TS-RS library takes the enums from rust and convert it into types for UI.
+
+check ![terrible diagram](./future-calc-data-building-workflow.png)
+
+### Why making it this complex?
+
+- 'luv automation.
+- 'luv multiple languages
+- 'ate Desync between two parts
+- Simple as.
+
+If you mess up data on the calc, then okay fine, someday someone will pick up on it.
+If you mess up sync between part, then it's just not gonna work at all.
