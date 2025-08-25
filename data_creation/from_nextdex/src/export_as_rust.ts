@@ -28,7 +28,12 @@ function generate_enum(params:{
     const enum_name = correct_rust_casing(params.enum_name)
     const enum_content = params.enum_content.map(correct_rust_casing)
     return `${WARNING_AUTO_EXPORT}
+use wasm_bindgen::{prelude::*};
+use serde::{Serialize, Deserialize};
+use ts_rs::TS;
 
+#[wasm_bindgen]
+#[derive(TS, Serialize, Deserialize, Clone, Copy)]
 pub enum ${enum_name}{
     ${enum_content.join(',\n    ')}
 }

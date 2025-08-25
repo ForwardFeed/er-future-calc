@@ -2,7 +2,12 @@
 // COMPLETELY OVERWRITING ANY CHANGE MADE
 // for more info check the data_creation/from_nextdex
 
+use wasm_bindgen::{prelude::*};
+use serde::{Serialize, Deserialize};
+use ts_rs::TS;
 
+#[wasm_bindgen]
+#[derive(TS, Serialize, Deserialize, Clone, Copy)]
 pub enum Species{
     None,
     Bulbasaur,

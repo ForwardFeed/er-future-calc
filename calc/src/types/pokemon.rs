@@ -2,6 +2,8 @@ use wasm_bindgen::{prelude::*};
 use ts_rs::TS;
 use serde::{Serialize, Deserialize};
 
+use crate::types::species::Species;
+
 #[wasm_bindgen]
 #[derive(TS, Serialize, Deserialize)]
 #[ts(export, export_to="pokemon.ts")]
@@ -73,6 +75,7 @@ pub enum PokemonType {
 #[ts(export, export_to="pokemon.ts")]
 
 pub struct Pokemon{
+    pub specie: Species,
     pub hp: u16,
     pub hp_max: u16,
 }
