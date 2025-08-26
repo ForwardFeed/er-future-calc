@@ -1,5 +1,5 @@
 import { export_rust_codegen } from "./filesystem_integration"
-import type { GameData } from "./types/ui_gamedata"
+import type { GameData } from "./types/gamedata"
 
 const WARNING_AUTO_EXPORT = `\
 // WARNING THIS FILE HAS BEEN AUTO GENERATED AND WILL LIKELY BE AUTOGEN AGAIN LATER
@@ -21,15 +21,19 @@ export function correct_rust_casing(str: string): string{
     return correct_str
 }
 
-function generate_enum({enum_name, enum_content}:{
-    enum_name: string,
-    enum_content: string[]
-}){
+function generate_starting_file(): string{
     return `${WARNING_AUTO_EXPORT}
 use wasm_bindgen::{prelude::*};
 use serde::{Serialize, Deserialize};
 use ts_rs::TS;
+`
+}
 
+function generate_enum({enum_name, enum_content}:{
+    enum_name: string,
+    enum_content: string[]
+}){
+    return`
 #[wasm_bindgen]
 #[derive(TS, Serialize, Deserialize, Clone, Copy)]
 pub enum ${enum_name}{
@@ -40,15 +44,31 @@ pub enum ${enum_name}{
 
 
 export function generate_rust_for_gamedata(gamedata: GameData){
+    
+    const BASE_FILE = generate_starting_file()
 
-    const enum_content_species = gamedata.species.map(x => x.name_id)
+    // species.rs
     const enum_species_text = generate_enum({
         enum_name: "Species",
-        enum_content: enum_content_species
+        enum_content: gamedata.species.map(x => x.name_id)
     })
 
     export_rust_codegen({
         filename: "species.rs",
-        content: enum_species_text
+        content: BASE_FILE + enum_species_text
     })
+    
+    // poketypes.rs
+    const enum_poketypes_text = generate_enum({
+        enum_name: "Poketypes",
+        enum_content: gamedata.indexes.types.map(x => correct_rust_casing(x))
+    })
+
+    export_rust_codegen({
+        filename: "poketypes.rs",
+        content: BASE_FILE + enum_poketypes_text
+    })
+
+
+    
 }
