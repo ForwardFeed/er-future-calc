@@ -53,7 +53,7 @@ Pros:
 
 
 Cons:
-- typings like with enums is difficult to constraint.
+- typings is difficult to constraint between two languages.
 - People having phones who don't support wasm, 4%, will be excluded.
 
 
