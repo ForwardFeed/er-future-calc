@@ -3,17 +3,16 @@
 Pokemon Calculators remade
 
 
-## What is there to add?
+## Plans
 
 - Better multiversionning, total modularity so client don't have to download everything as it is currently.
 - Modern tooling, Typescript 2.1 was 10 years ago, a lot of workaround of back then aren't anymore
 - UI made with vue, I love vue it's just better than basic html + js
-- Possible integration of wasm, which supports better typing such as unsigned int for less problematic calculations
-- Index Based calculation, no more string comparison, to allow better perfs, hence making possible
+- Integration of wasm, which supports better typing such as unsigned int for less problematic calculations
+- Enum / Index based Comparison, no more string comparison, to allow better perfs, hence making possible to do bulk calculation without waiting 10 secs
 - Better UI, with more data grouping such as trainers's pokemon or trainer's team.
-- conversion from gamecode of made games into data format for all romhacks and other kind of pokemons unofficial games.
-- UI and calc must be headless, to allow for better UI to replace over time.
-- 
+- Automation to generate the data, from games or other source of data.
+- UI and calc must be headless, to allow for others UI to replace over time.
 
 
 ## Some things I'd like to add
@@ -35,30 +34,28 @@ Automation can be required to update the data, romhacks that are in devellopemen
 At least one UI is needed, eventually everyone could do their own, but if we had to place an UI somewhere, lets place it here
 
 - /calc
-The actual code machinery
+The actual calculation machinery
 
 - /scripts
 any scripts that links this all beautiful world together
 
 
-## Should everything be ecmascript based?
+## The RUST + WASM road
 
-Typescript is a glorified linter for javascript.
-But I was rather thinking about going the rust and wasm road.
+Typescript is a glorified linter for javascript and functionnaly doesn't help about the painpoints when doing maths.
+But I was rather thinking about going the rust and wasm road so I don't struggle with math in calcs.
 
-### The RUST + WASM road
 It's pretty original, maybe too original. But I have it in my head for years now.
 
 Pros:
 - Real types, like real integer
-- Access to tree shaking algorithm, for multi versionning
+- Access to tree shaking building, for multi versionning
 
 
 Cons:
-- typings like with enums is difficult to constraint
+- typings like with enums is difficult to constraint.
 - People having phones who don't support wasm, 4%, will be excluded.
 
-y'know what fuck it lets ball I want to do that.
 
 ## Installation
 
