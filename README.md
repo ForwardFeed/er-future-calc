@@ -55,8 +55,7 @@ Pros:
 
 
 Cons:
-- having to transpile types from rust to typescript, as the inverse doesn't exist
-- needs a /type folder now.
+- typings like with enums is difficult to constraint
 - People having phones who don't support wasm, 4%, will be excluded.
 
 y'know what fuck it lets ball I want to do that.
@@ -93,6 +92,7 @@ bun install
 ```
 
 ### Using the project_helper.sh
+
 Jumping from folders to folders is annoying, here's why I made a project helper in bash
 
 There's even autocomplete if you do `. ./scripts/project_helpers.sh` before executing it normally
@@ -108,22 +108,7 @@ Since There's multiples languages to please here, the pipeline is complex.
 First I use a data_creation to automate many part of the process.
 From that standpoint which is not an absolute requirement, because if you have sanity to give, you could do it manually too.
 
-Anyway, So I pull data from my dex, again this is one way to do it, then I separate the concern:
+Anyway, So I pull data from my dex in the data creation(again this is one way to do it).
+Then I create a JSON file (that I will gzip at one point) for the UI
+and codegen some rust for enums.
 
-- Data Calc cares about and Identifiers
-- The data the UI cares about alongside identifiers.
-
-So my data creator codegenerate some enum in rust for the calc and create a JSON file (soon to become gzip file) for the UI.
-Then the TS-RS library takes the enums from rust and convert it into types for UI.
-
-check ![terrible diagram](./future-calc-data-building-workflow.png)
-
-### Why making it this complex?
-
-- 'luv automation.
-- 'luv multiple languages
-- 'ate Desync between two parts
-- Simple as.
-
-If you mess up data on the calc, then okay fine, someday someone will pick up on it.
-If you mess up sync between part, then it's just not gonna work at all.
