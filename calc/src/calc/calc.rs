@@ -1,4 +1,4 @@
-use crate::types::{field::{self, Field}, pokemon::Pokemon};
+use crate::types::{field::Field, pokemon::Pokemon};
 
 
 pub fn calc_entrypoint(attacker: &mut Pokemon, defender: &mut Pokemon, field: &mut Field){

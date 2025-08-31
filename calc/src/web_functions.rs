@@ -6,7 +6,7 @@ extern "C" {
 }
 
 
-// logging part 
+// for console.log
 #[wasm_bindgen]
 extern "C" {
     // Use `js_namespace` here to bind `console.log(..)` instead of just

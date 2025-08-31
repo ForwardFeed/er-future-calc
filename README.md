@@ -24,9 +24,6 @@ Pokemon Calculators remade
 ## Code structure.
 This project is ambitious, as many of my failed projects are. But regardless:
 
-- /data
-Plain data storing, UI will feed onto that, calc will feed onto that
-
 - /data_creation
 Automation can be required to update the data, romhacks that are in devellopement absolutely needs this part.
 
@@ -108,4 +105,15 @@ From that standpoint which is not an absolute requirement, because if you have s
 Anyway, So I pull data from my dex in the data creation(again this is one way to do it).
 Then I create a JSON file (that I will gzip at one point) for the UI
 and codegen some rust for enums.
+
+
+### Build Pipeline
+
+0. Setup the version that will be, ex: 2.5
+1. Get the data from nextdex into data_creator/*/in/gamedataV2.5.json
+2. Generate with the data creator
+- Data for the UI into gzip placed in a data folder inside the UI
+- Codegenerate rust code for enums mainly inside calc/src/types/
+3. Compile the calc, and deposit the wasm result into its own folder in ui/public/wasm
+4. Build the UI and here depends on where do I deposit it.
 
