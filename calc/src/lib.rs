@@ -1,6 +1,6 @@
 use wasm_bindgen::prelude::*;
 
-use crate::{calc::calc::calc_entrypoint, types::{field::{Field, Terrain}, pokemon::Pokemon}, web_functions::{alert, error, log, log_many, log_u32}};
+use crate::{calc::{calc_redux_2_5}, types::{field::Field, pokemon::Pokemon}, web_functions::{alert, error, log, log_many, log_u32}};
 
 mod web_functions;
 mod types{
@@ -12,7 +12,7 @@ mod types{
 }
 
 mod calc{
-    pub mod calc;
+    pub mod calc_redux_2_5;
 }
 
 #[wasm_bindgen]
@@ -23,13 +23,8 @@ pub fn greet(name: &str) {
     alert(&format!("Hello, {}!", name));
 }
 
-
-fn has_defender_more_hp(attacker: Pokemon, defender: Pokemon) -> bool{
-    attacker.hp < defender.hp
-}
-
 #[wasm_bindgen]
-pub fn calc_gen_redux(js_attacker: JsValue, js_defender: JsValue, js_field: JsValue){
+pub fn calc(js_attacker: JsValue, js_defender: JsValue, js_field: JsValue){
     let mut attacker: Pokemon = match serde_wasm_bindgen::from_value(js_attacker) {
         Ok(x) => x,
         Err(e) => {
@@ -51,5 +46,5 @@ pub fn calc_gen_redux(js_attacker: JsValue, js_defender: JsValue, js_field: JsVa
             return;
         },
     };
-    calc_entrypoint(&mut attacker, &mut defender, &mut field);
+    calc_redux_2_5::calc(&mut attacker, &mut defender, &mut field);
 }

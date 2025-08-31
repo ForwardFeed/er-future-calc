@@ -1,7 +1,7 @@
 use crate::types::{field::Field, pokemon::Pokemon};
 
 
-pub fn calc_entrypoint(attacker: &mut Pokemon, defender: &mut Pokemon, field: &mut Field){
+pub fn calc(attacker: &mut Pokemon, defender: &mut Pokemon, field: &mut Field){
 
     ability_spread_ability(defender);
     ability_spread_ability(attacker);
