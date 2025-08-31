@@ -46,7 +46,7 @@ pub fn calc(js_attacker: JsValue, js_defender: JsValue, js_field: JsValue){
             return;
         },
     };
-    if cfg!(my_custom_flag_v2) {
+    if cfg!(v2_5) {
         log("huh");
         calc_redux_2_5::calc(&mut attacker, &mut defender, &mut field);
     } else {

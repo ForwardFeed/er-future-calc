@@ -32,7 +32,7 @@ function showArgs(){
 case "$1" in
 
     build-calc)
-        (cd calc/ && wasm-pack build --target web --features my_custom_flag) &&
+        (cd calc/ && wasm-pack build --target web --features v2_5) &&
         (cd calc/ && cargo test export_bindings ) ||
         echo "error packing the wasm from the calc"
     ;;

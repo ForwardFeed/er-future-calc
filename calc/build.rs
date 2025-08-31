@@ -1,4 +1,9 @@
 fn main() {
-    println!("cargo::rustc-cfg=my_custom_flag_v2");
-    println!("cargo:rustc-check-cfg=my_custom_flag_v2");
+
+    let available_versions = ["v2_5"];
+
+    for version in available_versions{
+        println!("cargo:rustc-cfg={version}");
+        println!("cargo:rustc-check-cfg=cfg({version})");
+    }
 }
