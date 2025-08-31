@@ -1,7 +1,7 @@
 #/usr/bin/env bash
 
 
-ARGS="build-calc run-ui full-setup data-create"
+ARGS="build-calc run-ui full-setup data-create build-run"
 
 # I like autocomplete, so if you source this script, it will add some nice autocomplete
 if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
@@ -29,16 +29,25 @@ function showArgs(){
 
 [[ -z "$1" ]] && echo "missing argument, here's the list: " && showArgs && exit 1
 
+
+function build_calc(){
+    (cd calc/ && wasm-pack build --target web --features v2_5) &&
+    (cd calc/ && cargo test export_bindings ) ||
+    echo "error packing the wasm from the calc"
+}
+
+function run_ui(){
+    (cd ui/ && bun dev) ||
+    echo "error trying to run the ui"
+}
+
 case "$1" in
 
     build-calc)
-        (cd calc/ && wasm-pack build --target web --features v2_5) &&
-        (cd calc/ && cargo test export_bindings ) ||
-        echo "error packing the wasm from the calc"
+        build_calc
     ;;
     run-ui)
-        (cd ui/ && bun dev) ||
-        echo "error trying to run the ui"
+       run_ui
     ;;
     full-setup)
         echo "installing ui stuff" &&
@@ -52,7 +61,10 @@ case "$1" in
         (cd data_creation/from_nextdex/ && bun run ./index.ts) ||
         echo "something went wrong when creating the data"
     ;;
-
+    build-run)
+        build_calc
+        run_ui
+    ;;
     *)
     echo "unknown argument $1, here's the list" 
     showArgs

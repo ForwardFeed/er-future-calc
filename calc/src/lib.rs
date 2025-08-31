@@ -46,11 +46,11 @@ pub fn calc(js_attacker: JsValue, js_defender: JsValue, js_field: JsValue){
             return;
         },
     };
-    if cfg!(v2_5) {
-        log("huh");
+    if cfg!(feature = "v2_5") {
+        log("huh2");
         calc_redux_2_5::calc(&mut attacker, &mut defender, &mut field);
     } else {
-        log("bruh");
+        log("bruh2");
     }
     
 }
