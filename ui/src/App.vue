@@ -1,21 +1,23 @@
 <script setup lang="ts">
 import type { Field, Terrain } from "../../calc/bindings/field";
 import type { Pokemon } from "../../calc/bindings/pokemon";
-import init, { calc_gen_redux } from "../../calc/pkg/future_calc"
+import init, { calc } from "../../calc/pkg/future_calc"
 init().then(()=>{
    const attacker: Pokemon = {
     hp: 0,
     hp_max: 0,
-  }
+    specie: "AlcremieRainbowSwirl"
+   }
   const defender: Pokemon = {
     hp: 0,
     hp_max: 0,
+    specie: "AlcremieRainbowSwirl"
   }
   const terrain: Field = {
     terrain: "None",
     game_type: "Single"
   }
-  calc_gen_redux(attacker, defender, terrain)
+  calc(attacker, defender, terrain)
 })
 </script>
 <template>
