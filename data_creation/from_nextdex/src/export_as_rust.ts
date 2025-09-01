@@ -1,5 +1,5 @@
 import { export_rust_codegen } from "./filesystem_integration"
-import type { GameData } from "./types/gamedata"
+import type { GameData } from "../../../ui/src/types/gamedata"
 
 const WARNING_AUTO_EXPORT = `\
 // WARNING THIS FILE HAS BEEN AUTO GENERATED AND WILL LIKELY BE AUTOGEN AGAIN LATER

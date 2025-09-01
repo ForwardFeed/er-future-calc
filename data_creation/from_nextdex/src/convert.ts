@@ -2,11 +2,11 @@ import { correct_rust_casing } from "./export_as_rust"
 import type { CompactGameData } from "./types/nextdex_gamedata"
 import type { GameData, Specie } from "../../../ui/src/types/gamedata"
 
-function indexize<T>(table: T[], value: T){
+/* function indexize<T>(table: T[], value: T){
     if (!table.includes(value)) table.push(value)
     return table.indexOf(value)
 }
-
+ */
 function substring(element: string, to_remove: string){
     return element.replace(to_remove, "")
 }

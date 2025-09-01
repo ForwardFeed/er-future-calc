@@ -29,7 +29,6 @@ function showArgs(){
 
 [[ -z "$1" ]] && echo "missing argument, here's the list: " && showArgs && exit 1
 
-
 function build_calc(){
     (cd calc/ && wasm-pack build --target web --features v2_5) &&
     (cd calc/ && cargo test export_bindings ) ||
