@@ -53,7 +53,7 @@ case "$1" in
         echo "installing ui stuff" &&
         (cd ui/ && bun install) &&
         echo "installing calc stuff" && 
-        (cd calc/ && wasm-pack build --target web) && 
+        (cd calc/ && cargo build) && 
         echo "it should be good now" ||
         echo "something went wrong in the setup"
     ;;
@@ -71,7 +71,4 @@ case "$1" in
     exit 2
 
 esac
-
-
-
 fi
