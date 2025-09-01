@@ -117,3 +117,26 @@ and codegen some rust for enums.
 3. Compile the calc, and deposit the wasm result into its own folder in ui/public/wasm
 4. Build the UI and here depends on where do I deposit it.
 
+
+
+### About Multi-versionning
+
+One of the aim of this project was to have one calc for any kind of pokemon possible.
+But This won't be possible at some degrees.
+I mainly do this calc with Pokemon Elite Redux, which has its own mechanics.
+Some stats, for example innates, are only something pokemon Elite Redux handle.
+Although Rust & Typescript Supports conditionnal typing, it's exponentially difficult to manage.
+So I'll limit myself to program that handle only one kind of pokemon structure.
+I could handle as many pokemon mechanics, as it just requires to treeshake some code.
+however treeshaking typing is a doable hell that I won't try.
+
+
+### About Typing sharing.
+
+I currently have an issue.
+Types are all over the place and shared all over the place.
+I need to have one centralized place to handles those.
+ALso the buildflow of types is erratic
+
+dc => calc => ui <= ui
+
