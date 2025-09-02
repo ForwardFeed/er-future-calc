@@ -1,10 +1,8 @@
 use wasm_bindgen::{prelude::*};
 use serde::{Serialize, Deserialize};
-use ts_rs::TS;
 
 #[wasm_bindgen]
-#[derive(TS, Serialize, Deserialize)]
-#[ts(export, export_to="field.ts")]
+#[derive(Serialize, Deserialize)]
 pub enum Weather {
     None,
     Sand,
@@ -17,8 +15,7 @@ pub enum Weather {
     StrongWings
 }
 #[wasm_bindgen]
-#[derive(TS, Serialize, Deserialize, Clone, Copy)]
-#[ts(export, export_to="field.ts")]
+#[derive(Serialize, Deserialize, Clone, Copy)]
 pub enum Terrain {
     None,
     Electric,
@@ -27,16 +24,14 @@ pub enum Terrain {
     Misty,
 }
 #[wasm_bindgen]
-#[derive(TS, Serialize, Deserialize, Clone, Copy)]
-#[ts(export, export_to="field.ts")]
+#[derive(Serialize, Deserialize, Clone, Copy)]
 pub enum GameType {
     Single,
     Double
 }
 
 #[wasm_bindgen]
-#[derive(TS, Serialize, Deserialize)]
-#[ts(export, export_to="field.ts")]
+#[derive(Serialize, Deserialize)]
 pub struct Field{
     pub terrain: Terrain,
     pub game_type: GameType,

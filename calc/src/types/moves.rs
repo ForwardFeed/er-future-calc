@@ -1,10 +1,8 @@
 use wasm_bindgen::prelude::*;
 use serde::{Serialize, Deserialize};
-use ts_rs::TS;
 
 #[wasm_bindgen]
-#[derive(TS, Serialize, Deserialize)]
-#[ts(export, export_to="moves.ts")]
+#[derive(Serialize, Deserialize)]
 pub enum MoveTarget{
     AdjacentAlly,
     AdjacentAllyOrSelf,
@@ -23,16 +21,14 @@ pub enum MoveTarget{
     SSelf,
 }
 #[wasm_bindgen]
-#[derive(TS, Serialize, Deserialize)]
-#[ts(export, export_to="moves.ts")]
+#[derive(Serialize, Deserialize)]
 pub enum MoveCategory{
     Physical,
     Special,
     Status,
 }
 #[wasm_bindgen]
-#[derive(TS, Serialize, Deserialize)]
-#[ts(export, export_to="moves.ts")]
+#[derive(Serialize, Deserialize)]
 pub struct MoveFlags{
     contact: bool,
     bite: bool,
@@ -50,8 +46,7 @@ pub struct MoveFlags{
     weather: bool,
 }
 #[wasm_bindgen]
-#[derive(TS, Serialize, Deserialize)]
-#[ts(export, export_to="moves.ts")]
+#[derive(Serialize, Deserialize)]
 pub struct Move{
     name: &'static str,
 }

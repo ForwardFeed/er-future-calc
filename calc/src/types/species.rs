@@ -4,10 +4,9 @@
 
 use wasm_bindgen::{prelude::*};
 use serde::{Serialize, Deserialize};
-use ts_rs::TS;
 
 #[wasm_bindgen]
-#[derive(TS, Serialize, Deserialize, Clone, Copy)]
+#[derive(Serialize, Deserialize, Clone, Copy)]
 pub enum Species{
     None,
     Bulbasaur,

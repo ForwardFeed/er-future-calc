@@ -1,12 +1,10 @@
 use wasm_bindgen::{prelude::*};
-use ts_rs::TS;
 use serde::{Serialize, Deserialize};
 
 use crate::types::species::Species;
 
 #[wasm_bindgen]
-#[derive(TS, Serialize, Deserialize)]
-#[ts(export, export_to="pokemon.ts")]
+#[derive(Serialize, Deserialize)]
 pub enum Nature {
     Adamant,
     Bashful,
@@ -35,8 +33,7 @@ pub enum Nature {
     Timid,
 }
 #[wasm_bindgen]
-#[derive(TS, Serialize, Deserialize)]
-#[ts(export, export_to="pokemon.ts")]
+#[derive(Serialize, Deserialize)]
 pub enum PokemonStatus {
     Sleep,
     Poison,
@@ -46,8 +43,7 @@ pub enum PokemonStatus {
     Toxic,
 }
 #[wasm_bindgen]
-#[derive(TS, Serialize, Deserialize)]
-#[ts(export, export_to="pokemon.ts")]
+#[derive(Serialize, Deserialize)]
 pub enum PokemonType {
     Normal,
     Fighting,
@@ -71,8 +67,7 @@ pub enum PokemonType {
 }
 
 #[wasm_bindgen]
-#[derive(TS, Serialize, Deserialize)]
-#[ts(export, export_to="pokemon.ts")]
+#[derive(Serialize, Deserialize)]
 
 pub struct Pokemon{
     pub specie: Species,

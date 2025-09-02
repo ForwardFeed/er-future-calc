@@ -1,19 +1,17 @@
 <script setup lang="ts">
-import type { Field, Terrain } from "../../calc/bindings/field";
-import type { Pokemon } from "../../calc/bindings/pokemon";
 import init, { calc } from "../../calc/pkg/future_calc"
 init().then(()=>{
-   const attacker: Pokemon = {
+   const attacker = {
     hp: 0,
     hp_max: 0,
     specie: "AlcremieRainbowSwirl"
    }
-  const defender: Pokemon = {
+  const defender = {
     hp: 0,
     hp_max: 0,
     specie: "AlcremieRainbowSwirl"
   }
-  const terrain: Field = {
+  const terrain = {
     terrain: "None",
     game_type: "Single"
   }
