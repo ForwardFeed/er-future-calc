@@ -30,8 +30,7 @@ function showArgs(){
 [[ -z "$1" ]] && echo "missing argument, here's the list: " && showArgs && exit 1
 
 function build_calc(){
-    (cd calc/ && wasm-pack build --target web --features v2_5) &&
-    (cd calc/ && cargo test export_bindings ) ||
+    (cd calc/ && wasm-pack build --dev --target web --features v2_5 ) ||
     echo "error packing the wasm from the calc"
 }
 
@@ -61,8 +60,10 @@ case "$1" in
         echo "something went wrong when creating the data"
     ;;
     build-run)
-        build_calc
-        run_ui
+        # -O1 is low optimization
+        build_calc --dev &&
+        run_ui || 
+        echo "something in build-run failed"
     ;;
     *)
     echo "unknown argument $1, here's the list" 
