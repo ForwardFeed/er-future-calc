@@ -1,7 +1,7 @@
 #/usr/bin/env bash
 
 
-ARGS="build-calc run-ui full-setup data-create build-run"
+ARGS="build-calc run-ui full-setup data-create build-run build-all"
 
 # I like autocomplete, so if you source this script, it will add some nice autocomplete
 if [[ "${BASH_SOURCE[0]}" != "${0}" ]]; then
@@ -60,10 +60,13 @@ case "$1" in
         echo "something went wrong when creating the data"
     ;;
     build-run)
-        # -O1 is low optimization
+        # --dev is no optimization
         build_calc --dev &&
         run_ui || 
         echo "something in build-run failed"
+    ;;
+    build-all)
+        (cd scripts/ && bun run build_project.ts)
     ;;
     *)
     echo "unknown argument $1, here's the list" 
