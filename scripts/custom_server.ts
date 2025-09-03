@@ -5,7 +5,7 @@ import { watch } from "fs";
 import path from "path";
 import { parseArgs } from "util";
 
-const { values, positionnals } = parseArgs({
+const { values } = parseArgs({
   args: Bun.argv,
   options: {
     port: {
@@ -17,7 +17,7 @@ const { values, positionnals } = parseArgs({
     dir: {
       type: 'string',
       short: 'd',
-      default: './dist',
+      default: '../ui/dist/',
       required: false,
     }
   },
