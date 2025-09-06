@@ -66,12 +66,11 @@ while both the ui and the building uses bun.js they don't share the configuratio
 When I build my UI from the build, I'll do it using a subshell inside the ui/ folder and execute as it I was doing it with a shell
 or makefile script.
 
-
-### Code Style.
+## Code Style.
 
 For the rust part, keep it as it standart, it's great and important.
 
-For the typescript / javascript / vue / html part. I kinda don't care except that if you could use
+For the typescript / ecmascript / vue / html part. I kinda don't care except that if you could use
 const keyword whenever possible. If I feel bored I may just do the effort myself of reformatting.
 
 I use 4 spaces as indentations, If you use 2 spaces as identations I don't really care, 

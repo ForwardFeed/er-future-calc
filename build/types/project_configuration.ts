@@ -4,6 +4,6 @@ export type VersionConfig = {
     build_id: number
 }
 
-export type VersionConfigFile = {
+export type ProjectConfigurationFile = {
     versions: VersionConfig[]
 }
