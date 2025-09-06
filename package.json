@@ -11,6 +11,7 @@
   },
   "scripts": {
     "run-ui": "cd ui && bun dev",
-    "build-calc": "cd calc && wasm-pack build --dev --target web --features v2_5"
+    "build-calc": "cd calc && wasm-pack build --dev --target web --features v2_5",
+    "build": "bun ./build/build_project.ts"
   }
 }
