@@ -1,142 +1,78 @@
-# FUTURE CALC
+# FUTURE ER CALC
 
-Pokemon Calculators remade
+Pokemon Calculators remade, well at least for pokemon elite redux.
 
+## Why remaking it?
 
-## Plans
+The smogon pokemon calc wasn't made to work with the Elite Redux continuous devellopement fashion.
+The ER game updates quite often and there is the lastest public version and the latest upcomming version for beta testers.
+So multiversionning without code duplication was my aim in this project.
 
-- Better multiversionning, total modularity so client don't have to download everything as it is currently.
-- Modern tooling, Typescript 2.1 was 10 years ago, a lot of workaround of back then aren't anymore
-- UI made with vue, I love vue it's just better than basic html + js
-- Integration of wasm, which supports better typing such as unsigned int for less problematic calculations
-- Enum / Index based Comparison, no more string comparison, to allow better perfs, hence making possible to do bulk calculation without waiting 10 secs
-- Better UI, with more data grouping such as trainers's pokemon or trainer's team.
-- Automation to generate the data, from games or other source of data.
-- UI and calc must be headless, to allow for others UI to replace over time.
+Alongside it I wanted to get past the limitation of the smogon calc. Its slow, each calculation does hundreds of string comparison as javascript doesn't have enums, unless you want to go down some impractical roads. WASM is unlikely to be 50% faster than the most optimised js code for a calculator
+But It will definitively go at least 5000% faster from the current implementation.
 
+JS doesn't have integer. Pokemon calculation is based on ints, so in order to imitate the calculation system of pokemon, you have to do some really impractical schemes.
 
-## Some things I'd like to add
+Wasm also is compact in size and can be loaded as a module, each version is its own wasm file and loaded dynamically.
 
-- sound effect on clicks, moreover on user interactions
+Rust is also a good language to make a calculator in for various reasons, I enjoy coding in that language for ergonomic reasons,
+for technical reason it's also the most fitting for wasm, and the metaprogrammign aspect of it in a boilerplate heavy codebase is important.
 
+About the UI, the smogon UI is just bad, I tried to revamped it 2 years ago, and made it much better than the original, but it's still is terrible code
+that only I can still manage to code with, making it with vue will make it possible for a much wider range of dev to be able to modify it.
 
+Including a vast build system will allow to be more serene about the CI/CD pipeline, even if it's not going to be a masterpiece.
+I'll be using the nextdex dex as my source of truth for the data of this project as well as some assets.
 
-## Code structure.
-This project is ambitious, as many of my failed projects are. But regardless:
+## Compatibility with vanilla pokemon.
 
-- /data_creation
-Automation can be required to update the data, romhacks that are in devellopement absolutely needs this part.
+I won't do any effort in that direction, if you want that to happen, fork this project, you can still open an issue to discuss about it.
 
-- /ui
-At least one UI is needed, eventually everyone could do their own, but if we had to place an UI somewhere, lets place it here
+## If you want to help
 
-- /calc
-The actual calculation machinery
-
-- /scripts
-any scripts that links this all beautiful world together
-
-
-## The RUST + WASM road
-
-Typescript is a glorified linter for javascript and functionnaly doesn't help about the painpoints when doing maths.
-But I was rather thinking about going the rust and wasm road so I don't struggle with math in calcs.
-
-It's pretty original, maybe too original. But I have it in my head for years now.
-
-Pros:
-- Real types, like real integer
-- Access to tree shaking building, for multi versionning
-
-
-Cons:
-- typings is difficult to constraint between two languages.
-- People having phones who don't support wasm, 4%, will be excluded.
-
+I don't play Pokemon much anymore, let alone ER, for some reason I still persist in working around it despite leaving the dev team.
+But my motivation is rather low compared to what it has been in the past, so any help is welcomed and the simple fact of someone
+being interested in the project
 
 ## Installation
 
 ### Requirements
 
-I do everything on linux because linux rocks, maybe you can have it working on windows 
+I do everything on linux because linux rocks, probably you can have it working on windows 
 
 To build the calculator: 
 
 - install [rust](https://www.rust-lang.org/tools/install)
 - install [wasm-pack](https://developer.mozilla.org/en-US/docs/WebAssembly/Guides/Rust_to_Wasm#wasm-pack) with `cargo install wasm-pack`
 
-To build the UI:
+To build the UI & to run the building process:
 
 - install [bun](https://bun.sh/)
 
 
+## Project structure
 
-### Building the calc
+There 3 poles in this project.
 
-Open a terminal in calc/
-```
-wasm-pack build --target web
-```
-
-### Building the UI
-
-Open a terminal in ui/
-```
-bun install
-```
-
-### Using the project_helper.sh
-
-Jumping from folders to folders is annoying, here's why I made a project helper in bash
-
-There's even autocomplete if you do `. ./scripts/project_helpers.sh` before executing it normally
-
-But if you execute it normally `./scripts/project_helpers.sh`
-You will figure out how to use it
+- The calc (in rust) in calc/
+- The ui (TS + VUE3) in ui/
+- The building process & configuration in /build and in the root.
 
 
-## About The Data Building Pipeline flow
+### The building of the project
 
-Since There's multiples languages to please here, the pipeline is complex.
-
-First I use a data_creation to automate many part of the process.
-From that standpoint which is not an absolute requirement, because if you have sanity to give, you could do it manually too.
-
-Anyway, So I pull data from my dex in the data creation(again this is one way to do it).
-Then I create a JSON file (that I will gzip at one point) for the UI
-and codegen some rust for enums.
+Due to the constraints of the project, a lot of effort is also within the build process.
+while both the ui and the building uses bun.js they don't share the configuration and virtually shouldn't interact.
+When I build my UI from the build, I'll do it using a subshell inside the ui/ folder and execute as it I was doing it with a shell
+or makefile script.
 
 
-### Build Pipeline
+### Code Style.
 
-0. Setup the version that will be, ex: 2.5
-1. Get the data from nextdex into data_creator/*/in/gamedataV2.5.json
-2. Generate with the data creator
-- Data for the UI into gzip placed in a data folder inside the UI
-- Codegenerate rust code for enums mainly inside calc/src/types/
-3. Compile the calc, and deposit the wasm result into its own folder in ui/public/wasm
-4. Build the UI and here depends on where do I deposit it.
+For the rust part, keep it as it standart, it's great and important.
 
+For the typescript / javascript / vue / html part. I kinda don't care except that if you could use
+const keyword whenever possible. If I feel bored I may just do the effort myself of reformatting.
 
-
-### About Multi-versionning
-
-One of the aim of this project was to have one calc for any kind of pokemon possible.
-But This won't be possible at some degrees.
-I mainly do this calc with Pokemon Elite Redux, which has its own mechanics.
-Some stats, for example innates, are only something pokemon Elite Redux handle.
-Although Rust & Typescript Supports conditionnal typing, it's exponentially difficult to manage.
-So I'll limit myself to program that handle only one kind of pokemon structure.
-I could handle as many pokemon mechanics, as it just requires to treeshake some code.
-however treeshaking typing is a doable hell that I won't try.
-
-
-### About Typing sharing.
-
-I currently have an issue.
-Types are all over the place and shared all over the place.
-I need to have one centralized place to handles those.
-ALso the buildflow of types is erratic
-
-dc => calc => ui <= ui
-
+I use 4 spaces as indentations, If you use 2 spaces as identations I don't really care, 
+if an active contributor really want to switch to 2 spaces I could make the effort.
