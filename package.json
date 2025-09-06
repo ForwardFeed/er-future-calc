@@ -1,5 +1,5 @@
 {
-  "name": "from_nextdex",
+  "name": "futurecalc",
   "module": "index.ts",
   "type": "module",
   "private": true,
@@ -8,5 +8,9 @@
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "scripts": {
+    "run-ui": "cd ui && bun dev",
+    "build-calc": "cd calc && wasm-pack build --dev --target web --features v2_5"
   }
 }

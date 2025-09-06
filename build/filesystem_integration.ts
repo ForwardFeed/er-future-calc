@@ -1,4 +1,4 @@
-import type { CompactGameData } from "./types/nextdex_gamedata";
+import type { CompactGameData } from "./import_from_nextdex/types/nextdex_gamedata";
 
 
 export async function get_nextdex_game_data(): Promise<CompactGameData>{

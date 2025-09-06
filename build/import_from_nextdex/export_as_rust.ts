@@ -1,4 +1,4 @@
-import { export_rust_codegen } from "./filesystem_integration"
+import { export_rust_codegen } from "../filesystem_integration"
 import type { GameData } from "../../../ui/src/types/gamedata"
 
 const WARNING_AUTO_EXPORT = `\
