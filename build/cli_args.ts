@@ -129,7 +129,7 @@ function isParameterChecksInvalid(param_config: ParamRules, key: ParamConfigKey,
 
 export async function parse_CLI_args(): Promise<AppParameters | ParseCLIArgsErrorStatus>{
     const args = require('minimist')(Bun.argv.slice(2))
-    // This down is because I was lazy, so it auto writes a default object for me.
+    // I was lazy, so it auto writes a default object for me.
     // @ts-expect-error
     const parameters: AppParameters = Object.keys(PARAM_CONFIG_DATA).reduce((cumu, curr)=>{
         // @ts-expect-error
