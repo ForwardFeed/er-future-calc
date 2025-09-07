@@ -1,6 +1,7 @@
 import clc from 'cli-color';
 import type { ProjectConfigurationFile } from './types/project_configuration';
 import verify_config from './verify_config';
+import { get_config_file_and_verify } from './filesystem_integration';
 
 type ParamRules = {
     optional?: boolean,
@@ -127,6 +128,15 @@ function isParameterChecksInvalid(param_config: ParamRules, key: ParamConfigKey,
     return false
 }
 
+
+async function get_config_file(path: string) {
+    try{
+        return await get_config_file_and_verify(path)
+    } catch(e){
+        return `${e}`
+    }
+}
+
 export async function parse_CLI_args(): Promise<AppParameters | ParseCLIArgsErrorStatus>{
     const args = require('minimist')(Bun.argv.slice(2))
     // I was lazy, so it auto writes a default object for me.
@@ -151,12 +161,9 @@ export async function parse_CLI_args(): Promise<AppParameters | ParseCLIArgsErro
         return "ERR"
     }
 
-    const project_configuration = await Bun.file(filepath_configuration).json() as ProjectConfigurationFile
-    try{
-        verify_config(project_configuration)
-        console.log('successfully verified configuration file: ' + filepath_configuration)
-    } catch(e){
-        console.error('failed to verify configuration file: ' + filepath_configuration + '\n reasons: ', e)
+    const project_configuration = await get_config_file(filepath_configuration)
+    if (typeof project_configuration == "string"){
+        console.error(project_configuration)
         return "ERR"
     }
 
