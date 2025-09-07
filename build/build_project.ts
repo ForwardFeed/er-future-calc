@@ -1,6 +1,7 @@
 import { exit } from "process";
 import { parse_CLI_args } from "./cli_args";
 import { get_nextdex_gamedata_or_download_it } from "./filesystem_integration";
+import { setup_interactive_mode } from "./interactive_mode";
 
 
 console.log('Starting the process to build the project')
@@ -20,5 +21,8 @@ if (true){
 }
 
 
+// this true will be replaced by a config specification later
 
-
+if (true){
+    setup_interactive_mode()
+}
