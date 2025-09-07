@@ -1,6 +1,7 @@
+import type { CompactGameData } from "./types/nextdex_gamedata"
 
 
-export async function download_nextdex_data(version: string, target_file: string){
+export async function download_nextdex_data(version: string): Promise<CompactGameData>{
     // get it from my own github 
     const URL = `https://raw.githubusercontent.com/ForwardFeed/ER-nextdex/refs/heads/main/static/js/data/gameDataV${version}.json`
     return new Promise((resolve, reject)=>{
@@ -9,12 +10,12 @@ export async function download_nextdex_data(version: string, target_file: string
             if (!response.ok){
                 return reject('response was not ok')
             }
-            response.text()
-            .then((text)=>{
-                return resolve(text)
+            response.json()
+            .then((gamedata)=>{
+                return resolve(gamedata as CompactGameData)
             })
             .catch((err)=>{
-                return reject(`couldn't make nextdex data to text: ${err}`)
+                return reject(`couldn't make nextdex data to json: ${err}`)
             })
         })
         .catch((err)=>{

@@ -1,8 +1,31 @@
+import { download_nextdex_data } from "./import_from_nextdex/download_nextdex_data";
 import type { CompactGameData } from "./import_from_nextdex/types/nextdex_gamedata";
 import { readdir } from "node:fs/promises";
 
+export async function get_nextdex_gamedata_or_download_it(version: string): Promise<CompactGameData> {
+    return new Promise((resolve, reject)=>{
+        get_nextdex_gamedata(version)
+        .then((data)=>{
+            resolve(data)
+        })
+        .catch((err)=>{
+            console.log(`failed to get nextdex gamedata from files: ${err}
+    downloading the nextdex data from github`)
+            download_nextdex_data(version)
+            .then((data)=>{
+                write_nextdex_gamedata_to_file(version, JSON.stringify(data))
+                resolve(data)
+            })
+            .catch((err)=>{
+                reject(err)
+            })
+        })
+    })
+}
+
+
 function nextdex_gamedata_filepath(version: string){
-    return `./input/gameData${version}.json`
+    return `./build/input/gameDataV${version}.json`
 }
 
 export async function get_nextdex_gamedata(version: string): Promise<CompactGameData>{
