@@ -85,11 +85,15 @@ export async function get_config_file_and_verify(path: string): Promise<ProjectC
 }
 
 
-export async function move_wasm_builded_files_to_ui(version: string){
-    const origin_files_to_target = [
-        [`./calc/pkg/future_calc_bg.wasm`, `./ui/public/wasm/${version}/future_calc_bg.wasm`],
-        [`./calc/pkg/future_calc_bg.wasm.d.ts`, `./ui/public/wasm/${version}/future_calc_bg.wasm.d.ts`],
-        [`./calc/pkg/future_calc.d.ts`, `./ui/public/wasm/${version}/future_calc.d.ts`],
-        [`./calc/pkg/future_calc.js`, `./ui/public/wasm/${version}/future_calc.js`],
+export async function move_wasm_builded_files_to_ui(version_id: string, calc_folder = "./calc/pkg", ui_folder = "./ui/public/wasm"){
+    const origin_files_to_target: [string, string][]= [
+        [`${calc_folder}/future_calc_bg.wasm`, `${ui_folder}/${version_id}/future_calc_bg.wasm`],
+        [`${calc_folder}/future_calc_bg.wasm.d.ts`, `${ui_folder}/${version_id}/future_calc_bg.wasm.d.ts`],
+        [`${calc_folder}/future_calc.d.ts`, `${ui_folder}/${version_id}/future_calc.d.ts`],
+        [`${calc_folder}/future_calc.js`, `${ui_folder}/${version_id}/future_calc.js`],
     ]
+    console.log('moving wasm calc file to UI folder')
+    for (const pair of origin_files_to_target){
+        await Bun.write(pair[1], Bun.file(pair[0]))
+    }
 }
