@@ -1,29 +1,8 @@
 import clc from 'cli-color';
-import type { ProjectConfigurationFile } from './types/project_configuration';
-import verify_config from './verify_config';
+import type { AppParameters, CLIParameters, CLIParamRule, ProjectConfigurationFile } from './types/project_configuration';
 import { get_config_file_and_verify } from './filesystem_integration';
 
-type ParamRules = {
-    optional?: boolean,
-    long:     string,
-    short?:    string,
-    desc:      string[],
-    example?:  string,
-    default:   any,
-    // return an error message to say something went wrong as a message of error
-    // or return false as it's a valid type
-    type_check: (value: any)=> string | false,
-    // return an error message if something went wrong
-    validity_check:  (value: any, project_configuration: ProjectConfigurationFile)=> string | false,
-}
-
-
-export type AppParameters = {
-    file_configuration: string,
-    selected_version: string
-}
-
-const PARAM_CONFIG_DATA: {[key in keyof AppParameters]: ParamRules} = {
+const CLI_PARAM_RULES: {[key in keyof CLIParameters]: CLIParamRule} = {
     file_configuration: {
         optional: true,
         long: 'file-configuration',
@@ -47,22 +26,23 @@ const PARAM_CONFIG_DATA: {[key in keyof AppParameters]: ParamRules} = {
         default: undefined,
         type_check: function (value: any): string | false {
             if (typeof value != "string")
-                return `Selected version must be a string`
-            return false
+                return `Selected version must be a string`;
+            return false;
         },
         validity_check: function (selected_version: any, project_configuration): string | false {
-            if (!selected_version){
-                return `no version selected, please chose one of ${project_configuration.versions.map(x => x.name)}`
+            if (!selected_version) {
+                return `no version selected, please chose one of ${project_configuration.versions.map(x => x.name)}`;
             }
-            if (!~project_configuration.versions.findIndex(x => x.name == selected_version)){
-                return `wrong version selected ${selected_version}, please chose one of \`${project_configuration.versions.map(x => x.name).join(', ')}\``
+            if (!~project_configuration.versions.findIndex(x => x.name == selected_version)) {
+                return `wrong version selected ${selected_version}, please chose one of \`${project_configuration.versions.map(x => x.name).join(', ')}\``;
             }
-            return false
-        }
+            return false;
+        },
+        optional: false
     }
 }
 
-type ParamConfigKey = keyof typeof PARAM_CONFIG_DATA
+type ParamConfigKey = keyof typeof CLI_PARAM_RULES
 
 function printHelp(target_utility?: ParamConfigKey){
     const keyF        = clc.bold.bgBlack.cyan
@@ -77,7 +57,7 @@ ${tab}${descF("Show this message")}\n`
 
     function printHelpOne(key: ParamConfigKey){
         const spaceKey = " ".repeat(Math.max(0, 14 - key.length))
-        const param = PARAM_CONFIG_DATA[key]
+        const param = CLI_PARAM_RULES[key]
         const descText = param.desc.map((x)=> descF(`${tab}${x}`)).join("\n")
         console.log(
 `${keyF(key)}:${spaceKey}${param.short ? commandF("-" + param.short) :"  "}${tab}${commandF("--" + param.long)}\
@@ -86,12 +66,12 @@ ${tab}${fieldF("type:")} ${typeof param.default}
 ${tab}${fieldF("default:")} ${param.default}\n`)
     }
     if (target_utility){
-        console.log('printing help only for: ', PARAM_CONFIG_DATA[target_utility].long)
+        console.log('Printing help only for: ', CLI_PARAM_RULES[target_utility].long)
         printHelpOne(target_utility)
         return
     }
-    for (const key in PARAM_CONFIG_DATA){
-        printHelpOne(key as keyof typeof PARAM_CONFIG_DATA)
+    for (const key in CLI_PARAM_RULES){
+        printHelpOne(key as keyof typeof CLI_PARAM_RULES)
     }
     // print in stdout regardless of the log level
     console.log(helpText)
@@ -101,81 +81,74 @@ export type ParseCLIArgsErrorStatus =  "ERR" | "ASKED HELP"
 
 
 function find_param_key(target: string): ParamConfigKey | undefined{
-    for (const param_value_key_cringe in PARAM_CONFIG_DATA){
+    for (const param_value_key_cringe in CLI_PARAM_RULES){
         const param_value_key = param_value_key_cringe as ParamConfigKey
-        const param_value = PARAM_CONFIG_DATA[param_value_key]
+        const param_value = CLI_PARAM_RULES[param_value_key]
         if (param_value.short == target)
             return param_value_key
         if (param_value.long  == target)
             return param_value_key
     }
 }
-/**
- * 
- * @returns true if its a failure (weird I know but it's easier down the line)
- */
-function isParameterChecksInvalid(param_config: ParamRules, key: ParamConfigKey, value: any, project_configuration: ProjectConfigurationFile): boolean{
-    const typecheck_error_msg_or_none = param_config.type_check(value)
-    if (typecheck_error_msg_or_none ){
-        console.error(`parameter ${key} has wrong type: ${typecheck_error_msg_or_none}`)
-        return true
-    }
-    const value_validity_error_msg_or_none = param_config.validity_check(value, project_configuration)
-    if (value_validity_error_msg_or_none){
-        console.error(`parameter ${key} wasn't a valid value ${value_validity_error_msg_or_none} `)
-        return true
-    }  
-    return false
+
+function typecast_argument_value_to_string_boolean_only(value: any, arg: string): any{
+    // typecast 
+    if (typeof value == "number")
+        return value + ""
+    // non-typecast
+    if (typeof value == "string")
+        return value
+    if (typeof value == "boolean")
+        return value
+    console.warn(`Typecasted argument: ${arg}, with value; ${value} was type of ${typeof value}
+Which is something that may turn out to be a bug`)
+    return value
 }
 
-
-async function get_config_file(path: string) {
-    try{
-        return await get_config_file_and_verify(path)
-    } catch(e){
-        return `${e}`
+function get_parameter_value<T>(args: any, rule: CLIParamRule, project_configuration: ProjectConfigurationFile): T{
+    const value_in_args_raw = args[rule.long] || (rule.short && args[rule.short])
+    if (value_in_args_raw){
+        const param_used = args[rule.long] ? "--"  + rule.long : "-" + rule.short
+        const value_in_args = typecast_argument_value_to_string_boolean_only(value_in_args_raw, param_used)
+        const typecheck = rule.type_check(value_in_args)
+        if (typecheck)
+            throw `TypeCheck error on CLI parameter ${param_used} : ${typecheck}`
+        const valuecheck = rule.validity_check(value_in_args, project_configuration)
+        if (valuecheck)
+            throw `Validity Error on CLI parameter ${param_used} : ${valuecheck}`
+        return value_in_args
     }
+    if (rule.optional){
+        return rule.default
+    }
+    throw `CLI parameter: --${rule.long} ${rule.short ? `-${rule.short}` : ''} is mandatory`
 }
 
-export async function parse_CLI_args(): Promise<AppParameters | ParseCLIArgsErrorStatus>{
+export async function parse_CLI_args(): Promise<CLIParameters | ParseCLIArgsErrorStatus>{
     const args = require('minimist')(Bun.argv.slice(2))
-    // I was lazy, so it auto writes a default object for me.
-    // @ts-expect-error
-    const parameters: AppParameters = Object.keys(PARAM_CONFIG_DATA).reduce((cumu, curr)=>{
-        // @ts-expect-error
-        cumu[curr] = PARAM_CONFIG_DATA[curr].default
-        return cumu
-    }, {})
-
-    // due to the specificity of my program I need to first to valide the configuration file.
-    const filepath_configuration = args[PARAM_CONFIG_DATA.file_configuration.long] || 
-        args[PARAM_CONFIG_DATA.file_configuration.short || ""] || 
-        PARAM_CONFIG_DATA.file_configuration.default
-    
-    if (!filepath_configuration){
-        console.error(`Failed to get the path of the configuration file (${PARAM_CONFIG_DATA.file_configuration.long})`)
-        return "ERR"
+   
+    // First I look if the user checked help
+    const help_rule: CLIParamRule = {
+        optional: true,
+        long: 'help',
+        short: 'h',
+        desc: [],
+        default: false,
+        type_check: function (): string | false {
+            return false
+        },
+        validity_check: function (): string | false {
+            return false
+        }
     }
-    if (typeof filepath_configuration != "string"){
-        console.error(`the path of the configuration file (${PARAM_CONFIG_DATA.file_configuration.long}) has the wrong type: ${typeof filepath_configuration}`)
-        return "ERR"
-    }
-
-    const project_configuration = await get_config_file(filepath_configuration)
-    if (typeof project_configuration == "string"){
-        console.error(project_configuration)
-        return "ERR"
-    }
-
-    if (args["h"] || args["help"]){
-        const value = args["h"] || args["help"]
-        // in case of a help for a specific utility
-        if (value && typeof value == "string"){
-            const target_utility = find_param_key(value)
+    const value_of_help = get_parameter_value(args, help_rule, {} as ProjectConfigurationFile)
+    if (value_of_help){
+        if (value_of_help && typeof value_of_help == "string"){
+            const target_utility = find_param_key(value_of_help)
             if (target_utility){
                 printHelp(target_utility)
             } else {
-                console.warn(`Unrecognized command ${value}, here's the list`)
+                console.warn(`Unrecognized command ${value_of_help}, here's the list`)
                 printHelp()
             }
         } else {
@@ -183,38 +156,7 @@ export async function parse_CLI_args(): Promise<AppParameters | ParseCLIArgsErro
         }
         return "ASKED HELP"
     }
-    let error_in_parsing = false
-    for (const param_value_key_cringe in PARAM_CONFIG_DATA){
-        const param_value_key = param_value_key_cringe as ParamConfigKey
-        if (param_value_key == "file_configuration"){
-            continue // the check has been done before this loop
-        }
-        const param_value = PARAM_CONFIG_DATA[param_value_key] 
-        let value = args[param_value.long] ||  args[param_value.short || ""]
-        if (typeof value == 'number'){
-            // typecast all numbers 
-            value = value + ""
-        }
-        if (typeof value != "string" && typeof value != "boolean"){
-            console.warn(`type of value for ${ args[param_value.long] ? param_value.long : param_value.short} is ${typeof value}
-Which is not a boolean or a string, it will likely cause a bug`)
-        }
-        if (! value){
-            if (! param_value.optional){
-                console.error(`parameters --${param_value.long} ${param_value.short ? `(-${param_value.short})` : ''} is mandatory!
-\`For more detail you may do ${Bun.argv[1]} --help --${param_value.long}\``)
-                error_in_parsing = true
-            } 
-            continue
-        }
-        const has_error_checking = isParameterChecksInvalid(param_value, param_value_key, value, project_configuration)
-        if (has_error_checking){
-            error_in_parsing = true
-            continue
-        }
-        parameters[param_value_key] = value
-        
-    }
+    // Then I check for the positionnal arguments in case the user is confused by this custom made CLI argument
     for (const arg in args){
         const value = args[arg] as string | string[]
         if (Array.isArray(value)){
@@ -228,5 +170,27 @@ Which is not a boolean or a string, it will likely cause a bug`)
             continue 
         }
     }
-    return error_in_parsing ? "ERR" : parameters
+    // due to the specificity of my program I need to first to valide the configuration file.
+    // so I can get a ProjectConfigurationFile, which I cheat here
+    const filepath_configuration = get_parameter_value(args, CLI_PARAM_RULES.file_configuration, {} as ProjectConfigurationFile)
+
+    if (!filepath_configuration){
+        console.error(`Failed to get the path of the configuration file (${CLI_PARAM_RULES.file_configuration.long})`)
+        return "ERR"
+    }
+    if (typeof filepath_configuration != "string"){
+        console.error(`the path of the configuration file (${CLI_PARAM_RULES.file_configuration.long}) has the wrong type: ${typeof filepath_configuration}`)
+        return "ERR"
+    }
+
+    const project_configuration = await get_config_file_and_verify(filepath_configuration)
+
+    const app_parameters: AppParameters = {
+        file_configuration: filepath_configuration,
+        selected_version: get_parameter_value(args, CLI_PARAM_RULES.selected_version, project_configuration),
+
+        versions_data: project_configuration.versions,
+    }
+
+    return app_parameters
 }
