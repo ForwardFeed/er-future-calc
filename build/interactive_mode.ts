@@ -2,7 +2,7 @@ import { build_calculator } from "./build_pipeline"
 import { run_ui_dev } from "./subprocesses"
 
 
-export async function setup_interactive_mode(){
+export async function setup_interactive_mode(version_id: string){
 
     const proc_ui = await run_ui_dev()
     
@@ -24,7 +24,7 @@ export async function setup_interactive_mode(){
     
     for await (const _line of console) {
         try{
-            await build_calculator()
+            await build_calculator(version_id)
         } catch(e){
             process.exit(11)
         }

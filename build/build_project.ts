@@ -21,10 +21,10 @@ if (cli_arguments.download_nextdex){
 }
 
 if (cli_arguments.mode_interactive){
-    setup_interactive_mode()
+    setup_interactive_mode(cli_arguments.selected_version_data.name_id)
 } else {
     try{
-        await build_calculator()
+        await build_calculator(cli_arguments.selected_version_data.name_id)
     } catch(e){
         process.exit(21)
     }

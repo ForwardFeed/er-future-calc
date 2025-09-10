@@ -36,4 +36,5 @@ export type CLIParameters = {
 export type AppParameters = CLIParameters & {
 
     versions_data: VersionConfig[],
+    selected_version_data: VersionConfig
 }

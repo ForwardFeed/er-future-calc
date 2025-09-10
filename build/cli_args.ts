@@ -214,15 +214,17 @@ export async function parse_CLI_args(): Promise<AppParameters | ParseCLIArgsErro
     }
 
     const project_configuration = await get_config_file_and_verify(filepath_configuration)
-
+    const selected_version = get_parameter_value<string>(args, CLI_PARAM_RULES.selected_version, project_configuration)
+    const selected_version_data = project_configuration.versions.find(x => x.name == selected_version)
+    if (!selected_version_data) throw `Error retrieving selected versiob data`
     const app_parameters: AppParameters = {
         file_configuration: filepath_configuration,
-        selected_version: get_parameter_value(args, CLI_PARAM_RULES.selected_version, project_configuration),
+        selected_version,
         download_nextdex: get_parameter_value(args, CLI_PARAM_RULES.download_nextdex, project_configuration),
         mode_interactive: get_parameter_value(args, CLI_PARAM_RULES.mode_interactive, project_configuration),
 
         versions_data: project_configuration.versions,
-        
+        selected_version_data: selected_version_data,
     }
 
     return app_parameters

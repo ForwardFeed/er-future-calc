@@ -1,8 +1,9 @@
 
-const BUILD_CALC_COMMAND = "bun run build-calc".split(' ')
 
-export async function compile_calculator(){
-    const proc = Bun.spawn(BUILD_CALC_COMMAND)
+
+export async function compile_calculator(version_id: string){
+    const BUILD_CALC_COMMAND = `bun run build-calc -- --features=${version_id}`.split(' ')
+    const proc = Bun.spawn(BUILD_CALC_COMMAND) 
     setTimeout(async ()=>{
         const decoder = new TextDecoder()
         for await (const chunk of proc.stdout) {
