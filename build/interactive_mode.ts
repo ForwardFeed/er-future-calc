@@ -1,4 +1,5 @@
-import { compile_calculator, run_ui_dev } from "./subprocesses"
+import { build_calculator } from "./build_pipeline"
+import { run_ui_dev } from "./subprocesses"
 
 
 export async function setup_interactive_mode(){
@@ -22,11 +23,12 @@ export async function setup_interactive_mode(){
     process.stdout.write(prompt);
     
     for await (const _line of console) {
-        const proc_calculator_build = (await compile_calculator())
-        if (await proc_calculator_build.exited){
-            console.error(`compilation returned non-zero code: ${proc_calculator_build.exitCode}`)
+        try{
+            await build_calculator()
+        } catch(e){
             process.exit(11)
         }
         process.stdout.write(prompt);
     }
 }
+
