@@ -2,7 +2,7 @@ import { download_nextdex_data } from "./import_from_nextdex/download_nextdex_da
 import type { CompactGameData } from "./import_from_nextdex/types/nextdex_gamedata";
 import { readdir } from "node:fs/promises";
 import type { ProjectConfigurationFile } from "./types/project_configuration";
-import verify_config from "./verify_config";
+import verify_config_project from "./verify_config_project";
 
 export async function get_nextdex_gamedata_or_download_it(version: string): Promise<CompactGameData> {
     return new Promise((resolve, reject)=>{
@@ -71,7 +71,7 @@ export async function get_config_file_and_verify(path: string): Promise<ProjectC
         file_text.json()
         .then((data)=>{
             try{
-                verify_config(data)
+                verify_config_project(data)
                 resolve(data as ProjectConfigurationFile)
             } catch(e){
                 reject(`Configuration file wasn't validated as of ProjectConfigurationFile type`)

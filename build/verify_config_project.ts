@@ -36,7 +36,7 @@ const config_file_schema: JSONSchemaType<ProjectConfigurationFile> = {
 type ProjectConfigurationFileSchema = JTDDataType<typeof config_file_schema>
 
 
-export function verify_config(json_data: ProjectConfigurationFile): ProjectConfigurationFile{
+export function verify_config_project(json_data: ProjectConfigurationFile): ProjectConfigurationFile{
     const ajv = new Ajv()
     const validate = ajv.compile<ProjectConfigurationFileSchema>(config_file_schema)
 
@@ -47,4 +47,4 @@ export function verify_config(json_data: ProjectConfigurationFile): ProjectConfi
 }
 
 
-export default verify_config
+export default verify_config_project
