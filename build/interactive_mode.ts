@@ -6,7 +6,7 @@ export async function setup_interactive_mode(){
     const proc_ui = await run_ui_dev()
     
     const cleanup_before_exit = async ()=>{
-        console.log(`Cleaning up`)
+        console.log(`Killing vite process`)
         proc_ui.send("SIGINT")
     }
 
@@ -29,5 +29,4 @@ export async function setup_interactive_mode(){
         }
         process.stdout.write(prompt);
     }
-    await Bun.sleep(1000);
 }

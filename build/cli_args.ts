@@ -1,6 +1,13 @@
 import clc from 'cli-color';
-import type { AppParameters, CLIParameters, CLIParamRule, ProjectConfigurationFile } from './types/project_configuration';
+import type { AppParameters, CLIParameters, CLIParamRule, ProjectConfigurationFile, TypeOfSupportedString } from './types/project_configuration';
 import { get_config_file_and_verify } from './filesystem_integration';
+
+function simple_type_check(value: any, type: TypeOfSupportedString, error_text: string) : string | false{
+    if (typeof value == type){
+        return false
+    }
+    return error_text
+}
 
 const CLI_PARAM_RULES: {[key in keyof CLIParameters]: CLIParamRule} = {
     file_configuration: {
@@ -11,23 +18,19 @@ const CLI_PARAM_RULES: {[key in keyof CLIParameters]: CLIParamRule} = {
         example: '',
         default: './project_configuration.json',
         type_check: function (value: any): string | false {
-            if (typeof value === "string") 
-                return false
-            return "Supposed to be a string as it is a file path"
+            return simple_type_check(value, "string", "Supposed to be a string as it is a file path");
         },
         validity_check: function (value: any): string | false {
-            return false
+            return false;
         },
     },
     selected_version: {
         long: 'selected-version',
         short: 's',
         desc: [],
-        default: undefined,
+        default: "none, you have to provide it",
         type_check: function (value: any): string | false {
-            if (typeof value != "string")
-                return `Selected version must be a string`;
-            return false;
+            return simple_type_check(value, "string", "Selected version must be a string");
         },
         validity_check: function (selected_version: any, project_configuration): string | false {
             if (!selected_version) {
@@ -39,6 +42,33 @@ const CLI_PARAM_RULES: {[key in keyof CLIParameters]: CLIParamRule} = {
             return false;
         },
         optional: false
+    },
+    download_nextdex: {
+        optional: true,
+        long: 'download-nextdex',
+        short: 'd',
+        desc: [],
+        default: false,
+        type_check: function (value: any): string | false {
+            return simple_type_check(value, "boolean", "please do no give arguments to that one, unless =false");
+        },
+        validity_check: function (value: any, project_configuration: ProjectConfigurationFile): string | false {
+            return false;
+        }
+    },
+    mode_interactive: {
+        optional: true,
+        long: 'mode-interactive',
+        short: 'm',
+        desc: [],
+        example: undefined,
+        default: false,
+        type_check: function (value: any): string | false {
+            return simple_type_check(value, "boolean", "please do no give arguments to that one, unless =false");
+        },
+        validity_check: function (value: any, project_configuration: ProjectConfigurationFile): string | false {
+            return false;
+        }
     }
 }
 
@@ -119,12 +149,12 @@ function get_parameter_value<T>(args: any, rule: CLIParamRule, project_configura
         return value_in_args
     }
     if (rule.optional){
-        return rule.default
+        return rule.default as T
     }
     throw `CLI parameter: --${rule.long} ${rule.short ? `-${rule.short}` : ''} is mandatory`
 }
 
-export async function parse_CLI_args(): Promise<CLIParameters | ParseCLIArgsErrorStatus>{
+export async function parse_CLI_args(): Promise<AppParameters | ParseCLIArgsErrorStatus>{
     const args = require('minimist')(Bun.argv.slice(2))
    
     // First I look if the user checked help
@@ -188,8 +218,11 @@ export async function parse_CLI_args(): Promise<CLIParameters | ParseCLIArgsErro
     const app_parameters: AppParameters = {
         file_configuration: filepath_configuration,
         selected_version: get_parameter_value(args, CLI_PARAM_RULES.selected_version, project_configuration),
+        download_nextdex: get_parameter_value(args, CLI_PARAM_RULES.download_nextdex, project_configuration),
+        mode_interactive: get_parameter_value(args, CLI_PARAM_RULES.mode_interactive, project_configuration),
 
         versions_data: project_configuration.versions,
+        
     }
 
     return app_parameters

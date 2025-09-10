@@ -8,13 +8,16 @@ export type ProjectConfigurationFile = {
     versions: VersionConfig[]
 }
 
+export type TypeOfSupported = string | boolean 
+export type TypeOfSupportedString = "string" | "boolean"
+
 export type CLIParamRule = {
     optional: boolean,
     long:     string,
     short?:    string,
     desc:      string[],
     example?:  string,
-    default:   any,
+    default:   TypeOfSupported,
     // return an error message to say something went wrong as a message of error
     // or return false as it's a valid type
     type_check: (value: any)=> string | false,
@@ -25,11 +28,12 @@ export type CLIParamRule = {
 
 export type CLIParameters = {
     file_configuration: string,
-    selected_version: string
+    selected_version: string,
+    download_nextdex: boolean,
+    mode_interactive: boolean
 }
 
-export type AppParameters = {
-    file_configuration: string,
-    selected_version: string
+export type AppParameters = CLIParameters & {
+
     versions_data: VersionConfig[],
 }

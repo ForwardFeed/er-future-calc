@@ -14,8 +14,7 @@ if (cli_arguments == "ASKED HELP"){
     exit(1)
 }
 
-// this true will be replaced by a config specification later
-if (true){
+if (cli_arguments.download_nextdex){
     let nextdex_gamedata = await get_nextdex_gamedata_or_download_it(cli_arguments.selected_version)
     console.log(nextdex_gamedata.abilities[1])
 }
@@ -23,6 +22,6 @@ if (true){
 
 // this true will be replaced by a config specification later
 
-if (true){
+if (cli_arguments.mode_interactive){
     setup_interactive_mode()
 }
