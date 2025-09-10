@@ -74,7 +74,7 @@ export async function get_config_file_and_verify(path: string): Promise<ProjectC
                 verify_config_project(data)
                 resolve(data as ProjectConfigurationFile)
             } catch(e){
-                reject(`Configuration file wasn't validated as of ProjectConfigurationFile type`)
+                reject(`Configuration file wasn't validated as of ProjectConfigurationFile type\nerr: ${e}`)
             }
             
         })

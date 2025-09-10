@@ -1,19 +1,27 @@
 import { exit } from "process";
-import { parse_CLI_args } from "./cli_args";
+import { parse_CLI_args, type ParseCLIArgsErrorStatus } from "./cli_args";
 import { get_nextdex_gamedata_or_download_it } from "./filesystem_integration";
 import { setup_interactive_mode } from "./interactive_mode";
 import { build_calculator } from "./build_pipeline";
 import { verify_calc_cargo_toml } from "./verify_config_project";
+import type { AppParameters } from "./types/project_configuration";
 
 
 console.log('Starting the process to build the project')
 
-let cli_arguments = await parse_CLI_args()
+let cli_arguments: ParseCLIArgsErrorStatus | AppParameters
+
+try{
+    cli_arguments = await parse_CLI_args()
+} catch(e){
+    console.error(e)
+    exit(2)
+}
 
 if (cli_arguments == "ASKED HELP"){
     exit(0)
 } else if (cli_arguments == "ERR"){
-    exit(2)
+    exit(3)
 }
 
 // validate, or auto implement features in the cargo.toml

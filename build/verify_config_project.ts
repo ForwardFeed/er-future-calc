@@ -37,15 +37,24 @@ const config_file_schema: JSONSchemaType<ProjectConfigurationFile> = {
 
 type ProjectConfigurationFileSchema = JTDDataType<typeof config_file_schema>
 
+const REGEX_VALID_NAME_ID =  /^[A-Za-z][a-zA-Z0-9_]*$/
 
 export function verify_config_project(json_data: ProjectConfigurationFile): ProjectConfigurationFile{
     const ajv = new Ajv()
     const validate = ajv.compile<ProjectConfigurationFileSchema>(config_file_schema)
 
-    if (validate(json_data)){
-        return json_data
+    if (! validate(json_data)){
+        throw validate.errors
     }
-    throw validate.errors
+    const bad_name_ids = json_data.versions.reduce((cumu, curr)=>{
+        if (! REGEX_VALID_NAME_ID.test(curr.name_id))
+            cumu.push(curr.name_id)
+        return cumu
+    }, [] as string[])
+    if (bad_name_ids.length){
+        throw `Those name_id are invalid name ids: [${bad_name_ids}]`
+    }
+    return json_data
 }
 
 export async function verify_calc_cargo_toml(version_config: VersionConfig[]){
@@ -58,7 +67,7 @@ export async function verify_calc_cargo_toml(version_config: VersionConfig[]){
             cumu.push(curr.name_id)
         return cumu
     }, [] as string[])
-    
+
     if (missing_features_version.length){
         throw `Missing version as features in the calc cargo toml: ${missing_features_version}`
     }
