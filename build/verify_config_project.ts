@@ -1,6 +1,8 @@
 import Ajv,  {type JSONSchemaType} from "ajv"
-import type { ProjectConfigurationFile } from "./types/project_configuration"
+import type { ProjectConfigurationFile, VersionConfig } from "./types/project_configuration"
 import type { JTDDataType } from "ajv/dist/core"
+import { get_calc_cargo_toml } from "./filesystem_integration"
+import { TOML } from "bun"
 
 const config_file_schema: JSONSchemaType<ProjectConfigurationFile> = {
     type: "object",
@@ -46,5 +48,18 @@ export function verify_config_project(json_data: ProjectConfigurationFile): Proj
     throw validate.errors
 }
 
+export async function verify_calc_cargo_toml(version_config: VersionConfig[]){
+    const cargo_file = await get_calc_cargo_toml()
+    const cargo_toml = TOML.parse(cargo_file) as any
+    const features = Object.keys(cargo_toml.features)
 
-export default verify_config_project
+    const missing_features_version = version_config.reduce((cumu, curr)=>{
+        if (!~features.indexOf(curr.name_id))
+            cumu.push(curr.name_id)
+        return cumu
+    }, [] as string[])
+    
+    if (missing_features_version.length){
+        throw `Missing version as features in the calc cargo toml: ${missing_features_version}`
+    }
+}

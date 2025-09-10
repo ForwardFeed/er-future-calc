@@ -2,7 +2,7 @@ import { download_nextdex_data } from "./import_from_nextdex/download_nextdex_da
 import type { CompactGameData } from "./import_from_nextdex/types/nextdex_gamedata";
 import { readdir } from "node:fs/promises";
 import type { ProjectConfigurationFile } from "./types/project_configuration";
-import verify_config_project from "./verify_config_project";
+import { verify_config_project } from "./verify_config_project";
 
 export async function get_nextdex_gamedata_or_download_it(version: string): Promise<CompactGameData> {
     return new Promise((resolve, reject)=>{
@@ -96,4 +96,13 @@ export async function move_wasm_builded_files_to_ui(version_id: string, calc_fol
     for (const pair of origin_files_to_target){
         await Bun.write(pair[1], Bun.file(pair[0]))
     }
+}
+
+export async function get_calc_cargo_toml(calc_folder = "./calc/"): Promise<string>{
+    const path = `${calc_folder}/Cargo.toml`
+    const file = Bun.file(path)
+    if (!(await file.exists())){
+        throw `calc cargo toml wasn't found at: ${path}`
+    }
+    return await file.text()
 }

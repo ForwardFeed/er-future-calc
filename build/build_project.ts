@@ -3,6 +3,7 @@ import { parse_CLI_args } from "./cli_args";
 import { get_nextdex_gamedata_or_download_it } from "./filesystem_integration";
 import { setup_interactive_mode } from "./interactive_mode";
 import { build_calculator } from "./build_pipeline";
+import { verify_calc_cargo_toml } from "./verify_config_project";
 
 
 console.log('Starting the process to build the project')
@@ -12,8 +13,11 @@ let cli_arguments = await parse_CLI_args()
 if (cli_arguments == "ASKED HELP"){
     exit(0)
 } else if (cli_arguments == "ERR"){
-    exit(1)
+    exit(2)
 }
+
+// validate, or auto implement features in the cargo.toml
+await verify_calc_cargo_toml(cli_arguments.versions_data)
 
 if (cli_arguments.download_nextdex){
     let nextdex_gamedata = await get_nextdex_gamedata_or_download_it(cli_arguments.selected_version)
