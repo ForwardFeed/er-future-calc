@@ -9,3 +9,4 @@ export async function build_calculator(version_id: string){
     }
     move_wasm_builded_files_to_ui(version_id)
 }
+

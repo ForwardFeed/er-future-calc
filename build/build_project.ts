@@ -5,6 +5,7 @@ import { setup_interactive_mode } from "./interactive_mode";
 import { build_calculator } from "./build_pipeline";
 import { verify_calc_cargo_toml } from "./verify_config_project";
 import type { AppParameters } from "./types/project_configuration";
+import { convert_nextdex_to_gamedata } from "./import_from_nextdex/convert";
 
 
 console.log('Starting the process to build the project')
@@ -27,9 +28,9 @@ if (cli_arguments == "ASKED HELP"){
 // validate, or auto implement features in the cargo.toml
 await verify_calc_cargo_toml(cli_arguments.versions_data)
 
-if (cli_arguments.download_nextdex){
-    let nextdex_gamedata = await get_nextdex_gamedata_or_download_it(cli_arguments.selected_version)
-    console.log(nextdex_gamedata.abilities[1])
+if (cli_arguments.nextdex_import){
+    const nextdex_gamedata = await get_nextdex_gamedata_or_download_it(cli_arguments.selected_version)
+    const gamedata = convert_nextdex_to_gamedata(nextdex_gamedata)
 }
 
 if (cli_arguments.mode_interactive){

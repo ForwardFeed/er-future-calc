@@ -1,6 +1,6 @@
 import { correct_rust_casing } from "./export_as_rust"
 import type { CompactGameData } from "./types/nextdex_gamedata"
-import type { GameData, Specie } from "../../../ui/src/types/gamedata"
+import type { GameData, Specie } from "../../ui/src/types/gamedata"
 
 /* function indexize<T>(table: T[], value: T){
     if (!table.includes(value)) table.push(value)

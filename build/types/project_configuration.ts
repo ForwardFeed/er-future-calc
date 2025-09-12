@@ -29,7 +29,7 @@ export type CLIParamRule = {
 export type CLIParameters = {
     file_configuration: string,
     selected_version: string,
-    download_nextdex: boolean,
+    nextdex_import: boolean,
     mode_interactive: boolean
 }
 

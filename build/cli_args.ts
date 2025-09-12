@@ -43,10 +43,10 @@ const CLI_PARAM_RULES: {[key in keyof CLIParameters]: CLIParamRule} = {
         },
         optional: false
     },
-    download_nextdex: {
+    nextdex_import: {
         optional: true,
-        long: 'download-nextdex',
-        short: 'd',
+        long: 'nextdex-import',
+        short: 'n',
         desc: [],
         default: false,
         type_check: function (value: any): string | false {
@@ -220,7 +220,7 @@ export async function parse_CLI_args(): Promise<AppParameters | ParseCLIArgsErro
     const app_parameters: AppParameters = {
         file_configuration: filepath_configuration,
         selected_version,
-        download_nextdex: get_parameter_value(args, CLI_PARAM_RULES.download_nextdex, project_configuration),
+        nextdex_import: get_parameter_value(args, CLI_PARAM_RULES.nextdex_import, project_configuration),
         mode_interactive: get_parameter_value(args, CLI_PARAM_RULES.mode_interactive, project_configuration),
 
         versions_data: project_configuration.versions,
